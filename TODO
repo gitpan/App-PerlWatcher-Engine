@@ -1,0 +1,57 @@
+ROADMAP to public release
+# readme
+# documentation (pod)
+# persists summary level [engine?], collapse/expand states [gtk]
+# scrollable results [gtk]
+# travis-ci [gtk]
+
+ENGINE
+# watcher groups?
+# watcher actions: reset, mute, act (click), force check?
+# timestamps should include dates for sub-events?
+# research the possible usage of Module::Pluggable
+
+BUILD/ECOSYSTEM:
+# Build via travis-ci.org
+# Document modules (with Pod::Weaver?)
+
+REFACTOR:
+# watcher/watcher_function/guard
+
+WATCHERS:
+# ping: async dns query
+# ping: udp proto
+# ping: icmp proto: external program fork
+# rss: handle errors: non-200
+# rss: record timestamp
+# rss: smart update: use header's info 'if-modified-since'
+# rss: gather item titles or bodies
+# rss: display bodies as hints?
+# rss: get rid of XML::Simple
+# filetail: add beautifyer?
+# weather: add other tracking parameters
+# weather: add dsl for warnings
+# json watcher: curl -b 'PHPSESSID=470c412bd1b60bd9d463771490b9e132' -H 'X-Requested-With: XMLHttpRequest' -g 'http://media.iptel.by/video/cs/csadmin.php?DATA[SubCategoryID]=0&DATA[GenreID]=0&DATA[CountryID]=0&DATA[SortID]=1&DATA[SortCheckBox]=1&DATA[StartPageNum]=1&DATA[SearchMode]=0&DATA[SearchStr]=&DATA[SearchRBSel]=0&DATA[action]=getMainPage'
+# reminder watcher
+
+BUGS:
+# handle errors in rss thread (silently ignore?)
+*** unhandled exception in callback:
+***   File does not exist: Thread not found.
+***    at /home/dmol/development/perl/lib/lib/perl5/App/PerlWatcher/Watcher/Rss.pm line 89.
+***  ignoring at /home/dmol/development/perl/lib/lib/perl5/App/PerlWatcher/Engine.pm line 65.
+# error:
+*** unhandled exception in callback:
+***   AnyEvent::Handle uncaught error: Broken pipe at /home/dmol/development/perl/lib/lib/perl5/x86_64-linux-thread-multi/AnyEvent/Impl/Glib.pm line 57.
+***  ignoring at /home/dmol/development/perl/lib/lib/perl5/App/PerlWatcher/ui/Gtk2/EngineBackend.pm line 16.
+# redraw window on moving 
+
+OTHER:
+# error hanlding, e.g. user typos in config?
+# handle watcher's errors at startup
+
+FUTURE/POSTPONED:
+# rss: atom feeds?
+# other (non-gtk2) backends
+# cookbook of solutions
+

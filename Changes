@@ -1,0 +1,32 @@
+0.13      2013-08-19 11:22:48 Europe/Minsk
+
+0.13      2013-08-18 17:13:20 Europe/Minsk
+    Added POD documentation
+    Added Openable role to make RSS-news items openable in browser
+    Finalize Mooification 
+    [API change] Engine does not takes an backend_id any more, provide the backend instance
+    	 	 for that. Added Backend role for that.
+    [API change] The available leves are exported via App::PerlWatcher::Levels now
+
+0.12      2013-07-30 17:26:47 Europe/Minsk
+    Updated Sortable to 2.45
+    Mirgration to Moo instead of bare perl v5 OOP
+    [config change] FileTail: lines -> lines_number
+    [config change] Rss: _items_count-> items_number
+
+0.11      2013-07-25 12:16:37 Europe/Minsk
+    The build was adopted to travis-ci
+    Persists application state (statuses with levels) between invocations
+    Added Weather watcher
+    [fix] Build correctly on perl v5.12
+
+0.10      2013-07-08 01:05:47 Europe/Minsk
+    Use Dist::Zilla's @git plugins bundle
+
+0.09      2013-07-08 00:49:44 Europe/Minsk
+    Separation Gtk frontend from main engine
+
+0.08      2013-06-27 23:44:24 Europe/Minsk
+  [Improvements]
+      - Moved to using Dist::Zilla instead of old-school ExtUtils::MakeMaker
+
