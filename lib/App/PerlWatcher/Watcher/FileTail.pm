@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher::FileTail;
 {
-  $App::PerlWatcher::Watcher::FileTail::VERSION = '0.13';
+  $App::PerlWatcher::Watcher::FileTail::VERSION = '0.14'; # TRIAL
 }
 # ABSTRACT: Watches for changes file and outputs new added lines (a-la 'tail -f')
 
@@ -8,16 +8,18 @@ use 5.12.0;
 use strict;
 use warnings;
 
-use AnyEvent::Handle;
-use App::PerlWatcher::EventItem;
-use App::PerlWatcher::Levels;
-use App::PerlWatcher::Status;
-use App::PerlWatcher::Watcher;
 use Carp;
 use Devel::Comments;
 use File::ReadBackwards;
 use Linux::Inotify2;
 use Moo;
+use aliased 'Path::Class::File';
+
+use AnyEvent::Handle;
+use App::PerlWatcher::EventItem;
+use App::PerlWatcher::Levels;
+use aliased 'App::PerlWatcher::Status';
+use App::PerlWatcher::Watcher;
 
 
 has 'file'          => ( is => 'ro', required => 1);
@@ -43,9 +45,30 @@ sub _build_inotify {
 }
 
 sub start {
-    # starting watch file
     my ($self, $callback) = @_;
     $self->callback($callback) if $callback;
+
+    my $fail_start = sub {
+        my $msg = shift;
+        $self->callback->(
+            Status->new(
+                watcher     => $self,
+                level       => LEVEL_ANY,
+                description => sub { $self->description . " : $msg " },
+            )
+        );
+    };
+    my $path = File->new($self->file);
+    return $fail_start->($!) unless $path->open('r');
+
+    eval {
+        $self->_try_start;
+    };
+    $fail_start->($@) if($@);
+}
+
+sub _try_start {
+    my $self = shift;
 
     my $file_handle = $self->_initial_read;
 
@@ -114,7 +137,7 @@ sub _add_line {
 sub _trigger_callback {
     my ($self) = @_;
     my @events = @{ $self->events };
-    my $status = App::PerlWatcher::Status->new(
+    my $status = Status->new(
         watcher     => $self,
         level       => LEVEL_NOTICE,
         description => sub { $self->description },
@@ -156,7 +179,7 @@ App::PerlWatcher::Watcher::FileTail - Watches for changes file and outputs new a
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 ATTRIBUTES
 

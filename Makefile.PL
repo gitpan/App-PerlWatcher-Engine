@@ -25,13 +25,18 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "AnyEvent" => "7.04",
     "AnyEvent::HTTP" => "2.15",
+    "Class::Load" => "0.20",
     "Devel::Comments" => "v1.1.4",
     "File::ReadBackwards" => "1.05",
     "File::ShareDir::ProjectDistDir" => "v0.4.4",
     "HTTP::Date" => "6.02",
+    "IPC::Run" => "0.92",
     "Linux::Inotify2" => "1.22",
+    "List::MoreUtils" => "0.33",
     "Moo" => "1.003000",
+    "Path::Class" => "0.32",
     "Storable" => "2.45",
+    "URI" => "1.60",
     "XML::Simple" => "2.18",
     "XML::XPath" => "1.13",
     "aliased" => "0.31"
@@ -41,7 +46,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.98",
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.13",
+  "VERSION" => "0.14",
   "test" => {
     "TESTS" => "t/*.t"
   }
