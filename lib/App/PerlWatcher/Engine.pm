@@ -1,6 +1,6 @@
 package App::PerlWatcher::Engine;
 {
-  $App::PerlWatcher::Engine::VERSION = '0.14_01';
+  $App::PerlWatcher::Engine::VERSION = '0.15';
 }
 # ABSTRACT: Creates Watchers and lets them  notify Frontend with their's Statuses
 
@@ -20,6 +20,8 @@ use Path::Class qw(file);
 use App::PerlWatcher::Shelf;
 use App::PerlWatcher::Util::Bootstrap qw/get_home_dir/;
 use App::PerlWatcher::Util::Storable qw/freeze thaw/;
+
+
 
 
 has 'frontend'          => ( is => 'rw');
@@ -134,7 +136,7 @@ App::PerlWatcher::Engine - Creates Watchers and lets them  notify Frontend with 
 
 =head1 VERSION
 
-version 0.14_01
+version 0.15
 
 =head1 SYNOPSIS
 
@@ -191,6 +193,11 @@ version 0.14_01
  # info
  # warn
  # ...
+
+=head1 DESCRIPTION
+
+The more detailed description of PerlWatcher application can be found here:
+L<https://github.com/basiliscos/perl-watcher>
 
 =head1 ATTRIBUTES
 

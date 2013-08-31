@@ -34,6 +34,7 @@ my %WriteMakefileArgs = (
     "Linux::Inotify2" => "1.22",
     "List::MoreUtils" => "0.33",
     "Moo" => "1.003000",
+    "Net::Ping::External" => "0.13",
     "Path::Class" => "0.32",
     "Storable" => "2.45",
     "URI" => "1.60",
@@ -46,7 +47,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.98",
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.14_01",
+  "VERSION" => "0.15",
   "test" => {
     "TESTS" => "t/*.t"
   }

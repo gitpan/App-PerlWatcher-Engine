@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher::HTTP;
 {
-  $App::PerlWatcher::Watcher::HTTP::VERSION = '0.14_01';
+  $App::PerlWatcher::Watcher::HTTP::VERSION = '0.15';
 }
 # ABSTRACT: The base role for watching external events via HTTP
 
@@ -85,16 +85,14 @@ sub _build_watcher_callback {
     return $watcher;
 }
 
-sub start {
-    my ($self, $callback) = @_;
-    $self->callback($callback) if $callback;
-
-    $self->{_w} = AnyEvent->timer(
+sub build_watcher_guard {
+    my $self = shift;
+    return AnyEvent->timer(
         after    => 0,
         interval => $self->frequency,
         cb       => sub {
-            my $watcher_cb = $self->watcher_callback;
-            $watcher_cb->() if defined( $self -> {_w} );
+            $self->watcher_callback->()
+              if $self->active;
         }
     );
 }
@@ -124,7 +122,7 @@ App::PerlWatcher::Watcher::HTTP - The base role for watching external events via
 
 =head1 VERSION
 
-version 0.14_01
+version 0.15
 
 =head1 ATTRIBUTES
 

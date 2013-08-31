@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher;
 {
-  $App::PerlWatcher::Watcher::VERSION = '0.14_01';
+  $App::PerlWatcher::Watcher::VERSION = '0.15';
 }
 # ABSTRACT: Observes some external source of events and emits the result of polling them
 
@@ -19,8 +19,7 @@ use Storable qw/freeze/;
 
 use Moo::Role;
 
-
-requires 'description';
+with qw/App::PerlWatcher::Describable/;
 
 
 has 'engine_config'     => ( is => 'ro', required => 1);
@@ -39,6 +38,12 @@ has 'memory'            => ( is => 'rw');
 
 
 has 'callback'          => ( is => 'rw');
+
+
+has 'watcher_guard'     => ( is => 'rw');
+
+
+requires 'build_watcher_guard';
 
 use overload fallback => 1, q/""/ => sub { $_[0]->unique_id; };
 
@@ -82,14 +87,30 @@ sub _build_unique_id {
 }
 
 
+sub force_poll {
+    my $self = shift;
+    $self->active(0);
+    $self->active(1);
+}
+
+
 sub active {
     my ( $self, $value ) = @_;
     if ( defined($value) ) {
-        delete $self->{_w} unless $value;
+        $self->watcher_guard(undef)
+            unless $value;
         $self->start if $value;
     }
-    return defined( $self->{_w} );
+    return defined( $self->watcher_guard );
 }
+
+
+sub start {
+    my ($self, $callback) = @_;
+    $self->callback($callback) if $callback;
+    $self->watcher_guard( $self->build_watcher_guard );
+}
+
 
 
 sub calculate_threshods {
@@ -175,7 +196,7 @@ sub _emit_event {
     my $status = App::PerlWatcher::Status->new(
         watcher     => $self,
         level       => $level,
-        description => sub {  $self->description  },
+        description => sub { $self->describe },
         items       => $items,
     );
     $callback->($status);
@@ -212,7 +233,7 @@ App::PerlWatcher::Watcher - Observes some external source of events and emits th
 
 =head1 VERSION
 
-version 0.14_01
+version 0.15
 
 =head1 ATTRIBUTES
 
@@ -248,15 +269,28 @@ and unique_id are stored.
 The subroutine reference, which is been called on every poll of watcher external source.
 It's argument is the State.
 
+=head2 watcher_guard
+
+The watcher guard returned by AnyEvent->io, AnyEvent->timer etc, with is an core
+under wich the Watcher is been build.
+
 =head1 METHODS
 
-=head2 description
+=head2 build_watcher_guard
 
-The string description of the watcher
+The method is responsible for building watcher_guard
+
+=head2 force_poll
+
+Immediatly polls the watched object.
 
 =head2 active
 
 Turns on and off the wacher.
+
+=head2 start
+
+Starts the watcher, which will emit it's statuses.
 
 =head2 calculate_threshods
 
