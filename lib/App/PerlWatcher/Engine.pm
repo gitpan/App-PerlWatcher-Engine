@@ -1,6 +1,6 @@
 package App::PerlWatcher::Engine;
 {
-  $App::PerlWatcher::Engine::VERSION = '0.15';
+  $App::PerlWatcher::Engine::VERSION = '0.16';
 }
 # ABSTRACT: Creates Watchers and lets them  notify Frontend with their's Statuses
 
@@ -49,13 +49,24 @@ sub _build_watchers {
     my $self = shift;
     my $config = $self->config;
     my @r;
+    my $engine_callback = sub {
+        my $status = shift;
+        AnyEvent::postpone {
+            $self->frontend->update($status);
+        };
+    };
     for my $watcher_definition ( @{ $config -> {watchers} } ) {
         my ($class, $watcher_config )
             = @{ $watcher_definition }{ qw/class config/ };
         my $watcher;
         eval {
             load_class($class);
-            $watcher = $class->new( engine_config => $config, %$watcher_config );
+            $watcher = $class->new(
+                engine_config => $config,
+                callback      => $engine_callback,
+                %$watcher_config
+            );
+            $watcher->callback($engine_callback);
             push @r, $watcher;
         };
         carp "Error creating watcher $class : $@" if $@;
@@ -90,16 +101,7 @@ sub BUILD {
 
 sub start {
     my $self = shift;
-    for my $w ( @{ $self->watchers } ) {
-        $w->start(
-            sub {
-                my $status = shift;
-                AnyEvent::postpone {
-                    $self->frontend->update($status);
-                };
-            }
-        );
-    }
+    $_->start for ( @{ $self->watchers } );
     # actually trigger watchers
     $self->backend->start_loop;
 }
@@ -136,7 +138,7 @@ App::PerlWatcher::Engine - Creates Watchers and lets them  notify Frontend with 
 
 =head1 VERSION
 
-version 0.15
+version 0.16
 
 =head1 SYNOPSIS
 
@@ -174,6 +176,21 @@ version 0.15
                 },
             },
         },
+        {
+            class => 'App::PerlWatcher::Watcher::GenericExecutor',
+            config => {
+                command       => "/bin/ls",
+                arguments     => ["-1a", "/tmp/"],
+                frequency     => 60,
+                timeout       => 5,
+                # filtering "." and ".." files
+                filter        => sub { ($_ !~ /^\.{1,2}$/) && (/\S+/) },
+                rules         => [
+            	    warn  => sub { any { /strange_file.txt/ } @_ },
+                ],
+            }
+        },
+
     ],
  };
 
@@ -193,11 +210,13 @@ version 0.15
  # info
  # warn
  # ...
+ # or you'll get warn if strange_file.txt suddendly appears
+ # in /tmp
 
 =head1 DESCRIPTION
 
 The more detailed description of PerlWatcher application can be found here:
-L<https://github.com/basiliscos/perl-watcher>
+L<https://github.com/basiliscos/perl-watcher>.
 
 =head1 ATTRIBUTES
 

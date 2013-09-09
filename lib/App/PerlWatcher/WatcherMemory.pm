@@ -1,6 +1,6 @@
 package App::PerlWatcher::WatcherMemory;
 {
-  $App::PerlWatcher::WatcherMemory::VERSION = '0.15';
+  $App::PerlWatcher::WatcherMemory::VERSION = '0.16';
 }
 # ABSTRACT: Represents watcher memory, which can be persisted (detached) from Watcher
 
@@ -19,6 +19,9 @@ has 'thresholds_map'    => ( is => 'ro', required => 1);
 
 
 has 'last_level'        => ( is => 'rw', default => sub { LEVEL_NOTICE; } );
+
+
+has 'active' => (is => 'rw', default => sub { 1 } );
 
 
 sub interpret_result {
@@ -65,7 +68,7 @@ App::PerlWatcher::WatcherMemory - Represents watcher memory, which can be persis
 
 =head1 VERSION
 
-version 0.15
+version 0.16
 
 =head1 ATTRIBUTES
 
@@ -85,6 +88,10 @@ which level of severity it is. It looks like:
 =head2 last_level
 
 Represents last emitted watcher level. 
+
+=head2 active
+
+Represents whether the watcher is active or not
 
 =head1 METHODS
 

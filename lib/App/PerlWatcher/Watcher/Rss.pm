@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher::Rss;
 {
-  $App::PerlWatcher::Watcher::Rss::VERSION = '0.15';
+  $App::PerlWatcher::Watcher::Rss::VERSION = '0.16';
 }
 # ABSTRACT: Watches RSS feed and returns last news headers as clickable Eventitems.
 
@@ -15,6 +15,7 @@ use Devel::Comments;
 use HTTP::Date;
 use Moo;
 use XML::Simple;
+
 
 
 has 'url'               => ( is => 'ro', required => 1);
@@ -72,7 +73,26 @@ App::PerlWatcher::Watcher::Rss - Watches RSS feed and returns last news headers 
 
 =head1 VERSION
 
-version 0.15
+version 0.16
+
+=head1 SYNOPSIS
+
+ # use the following config for Engine:
+
+        {
+            class => 'App::PerlWatcher::Watcher::Rss',
+            config => {
+                url         =>  'http://www.opennet.ru/opennews/opennews_all.rss',
+                title       =>  'opennet',
+                frequency   => 60,
+                timeout     => 10,
+                items       =>  5,
+                on          => {
+                        ok      => { 1  => 'notice' },
+                        fail    => { 10 => 'info/max'   },
+                },
+            },
+        },
 
 =head1 ATTRIBUTES
 

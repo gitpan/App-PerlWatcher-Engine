@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher::Weather;
 {
-  $App::PerlWatcher::Watcher::Weather::VERSION = '0.15';
+  $App::PerlWatcher::Watcher::Weather::VERSION = '0.16';
 }
 # ABSTRACT: Weather watches based around api.yr.no. Currenlty monitors only temperature and does no any notifications / level alerts.
 
@@ -19,6 +19,7 @@ use XML::XPath;
 our $T_UNITS = {
     celcius => 'C°',
 };
+
 
 
 has 'latitude'          => ( is => 'ro', required => 1);
@@ -90,7 +91,21 @@ App::PerlWatcher::Watcher::Weather - Weather watches based around api.yr.no. Cur
 
 =head1 VERSION
 
-version 0.15
+version 0.16
+
+=head1 SYNOPSIS
+
+ # use the following config for Engine:
+        {
+            class => 'App::PerlWatcher::Watcher::Weather',
+            config => {
+                describer   => sub { "Weather in Minsk: " . $_[0] },
+                latitude    => 53.54,
+                longitude   => 27.34,
+                frequency   => 1800,
+                timeout     => 15,
+            },
+        },
 
 =head1 ATTRIBUTES
 

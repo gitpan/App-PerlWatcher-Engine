@@ -12,7 +12,11 @@ BEGIN { unshift @INC, "$FindBin::Bin/lib" }
 use Test::PerlWatcher::TestWatcher;
 
 my %engine_config;
-my %watcher_init = (a=>'b', c=>1, e=>{d=>5}, engine_config => \%engine_config);
+my %watcher_init = (
+    a=>'b', c=>1, e=>{d=>5},
+    engine_config => \%engine_config,
+    callback      => sub { },
+);
 my $w1 = Test::PerlWatcher::TestWatcher->new(%watcher_init); 
 my $w1_1 = Test::PerlWatcher::TestWatcher->new(%watcher_init);
 
@@ -28,6 +32,10 @@ $watcher_init{describer} = sub {
 };
 my $w3 = Test::PerlWatcher::TestWatcher->new(%watcher_init);
 like $w3->describe, qr/Beautified.{2,}/, "has beautified description";
+
+$watcher_init{inner_sub} = [ sub{;} ];
+my $w4 = Test::PerlWatcher::TestWatcher->new(%watcher_init);
+ok $w4->unique_id, "watcher with inner sub has an unique id";
 
 done_testing;
 

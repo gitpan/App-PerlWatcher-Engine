@@ -26,15 +26,17 @@ my %WriteMakefileArgs = (
     "AnyEvent" => "7.04",
     "AnyEvent::HTTP" => "2.15",
     "Class::Load" => "0.20",
+    "Data::Dump" => "1.22",
     "Devel::Comments" => "v1.1.4",
     "File::ReadBackwards" => "1.05",
     "File::ShareDir::ProjectDistDir" => "v0.4.4",
     "HTTP::Date" => "6.02",
-    "IPC::Run" => "0.92",
+    "IPC::Run3" => "0.046",
     "Linux::Inotify2" => "1.22",
     "List::MoreUtils" => "0.33",
     "Moo" => "1.003000",
     "Net::Ping::External" => "0.13",
+    "POSIX" => "1.30",
     "Path::Class" => "0.32",
     "Storable" => "2.45",
     "URI" => "1.60",
@@ -47,7 +49,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.98",
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.15",
+  "VERSION" => "0.16",
   "test" => {
     "TESTS" => "t/*.t"
   }

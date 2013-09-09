@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher;
 {
-  $App::PerlWatcher::Watcher::VERSION = '0.15';
+  $App::PerlWatcher::Watcher::VERSION = '0.16';
 }
 # ABSTRACT: Observes some external source of events and emits the result of polling them
 
@@ -12,6 +12,7 @@ use App::PerlWatcher::Levels;
 use App::PerlWatcher::Status;
 use aliased 'App::PerlWatcher::WatcherMemory';
 use Carp;
+use Data::Dump::Filtered qw/dump_filtered/;
 use Devel::Comments;
 use Digest::MD5 qw(md5_base64);
 use List::Util qw( max );
@@ -37,7 +38,7 @@ has 'unique_id'         => ( is => 'lazy');
 has 'memory'            => ( is => 'rw');
 
 
-has 'callback'          => ( is => 'rw');
+has 'callback'          => ( is => 'rw', required => 1);
 
 
 has 'watcher_guard'     => ( is => 'rw');
@@ -76,14 +77,15 @@ sub _build_memory {
 sub _build_unique_id {
     my $self = shift;
     my $class = ref($self);
-    my $config = $self->config;
-    my @clean_keys = grep { (ref($config->{$_}) // '?') ne 'CODE' }
-        keys %$config;
-    my @values = sort @{ $config }{ @clean_keys };
+    my $filter = sub {
+        my($ctx, $object_ref) = @_;
+        return (ref($object_ref) eq 'CODE') ? { object => 'FILTERED' } : undef;
+    };
+    my $dumped_config = dump_filtered($self->config, $filter);
+    my $config = eval $dumped_config;
+    my @values = map { $config->{$_} } sort keys %$config;
     my $hash = md5_base64(freeze(\@values));
     my $id = "$class/$hash";
-    ## @values
-    ## $id
 }
 
 
@@ -97,18 +99,19 @@ sub force_poll {
 sub active {
     my ( $self, $value ) = @_;
     if ( defined($value) ) {
+        $self->memory->active($value);
         $self->watcher_guard(undef)
             unless $value;
         $self->start if $value;
     }
-    return defined( $self->watcher_guard );
+    return $self->memory->active;
 }
 
 
 sub start {
-    my ($self, $callback) = @_;
-    $self->callback($callback) if $callback;
-    $self->watcher_guard( $self->build_watcher_guard );
+    my $self = shift;
+    $self->watcher_guard( $self->build_watcher_guard )
+        if $self->memory->active;
 }
 
 
@@ -233,7 +236,7 @@ App::PerlWatcher::Watcher - Observes some external source of events and emits th
 
 =head1 VERSION
 
-version 0.15
+version 0.16
 
 =head1 ATTRIBUTES
 
@@ -290,7 +293,8 @@ Turns on and off the wacher.
 
 =head2 start
 
-Starts the watcher, which will emit it's statuses.
+Starts the watcher, which will emit it's statuses. The watcher will
+start only it is active.
 
 =head2 calculate_threshods
 

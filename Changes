@@ -1,3 +1,12 @@
+0.16      2013-09-10 00:04:16 Europe/Minsk
+    Added GenericExecutor Watcher to periodically execute arbitrary command
+    	  and watch/view it's output
+    The watcher's unique_id generation algorithm changed to handle correctly
+    	  deep configuration structures.
+    [API] Watcher Memory now stores 'active' state of Watcher
+    [API] Watcher role now requires 'callback' parameter in instance construction,
+    	  'start' method does not takes the callback as 2nd parameter any more
+
 0.15      2013-08-31 23:01:57 Europe/Minsk
     Ping Watcher now supports ICMP ping (via Net::Ping::External) as well as TCP knock 
     [API] Watcher has 'build_watcher_guard' method, which is responsible for constructing 
