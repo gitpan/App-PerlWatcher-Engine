@@ -1,4 +1,10 @@
+0.16_2    2013-09-13 00:24:15 Europe/Minsk
+    [Fix] Once again fix watcher's unique_id generation algorithm.
+    [API] GenericExecutor Watcher now has 'beautifyer' closure, which is been
+    applied for every line of filtered output
+
 0.16_1    2013-09-10 00:16:59 Europe/Minsk
+    [Fix] Do not include POSIX in dependencies.
 
 0.16      2013-09-10 00:04:16 Europe/Minsk
     Added GenericExecutor Watcher to periodically execute arbitrary command
