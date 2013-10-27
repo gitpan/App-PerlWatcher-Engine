@@ -1,3 +1,6 @@
+0.16_3    2013-10-27 12:52:59 Europe/Minsk
+    [Fix] Minor fixes in distribution, e.g. add git repository url
+
 0.16_2    2013-09-13 00:24:15 Europe/Minsk
     [Fix] Once again fix watcher's unique_id generation algorithm.
     [API] GenericExecutor Watcher now has 'beautifyer' closure, which is been

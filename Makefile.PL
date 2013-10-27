@@ -45,10 +45,14 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "AnyEvent::HTTPD" => "0.93",
-    "Test::More" => "0.98",
+    "File::Spec" => 0,
+    "File::Temp" => 0,
+    "IO::Handle" => 0,
+    "IPC::Open3" => 0,
+    "Test::More" => 0,
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.16_2",
+  "VERSION" => "0.16_3",
   "test" => {
     "TESTS" => "t/*.t"
   }
