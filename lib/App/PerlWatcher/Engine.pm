@@ -1,6 +1,6 @@
 package App::PerlWatcher::Engine;
 {
-  $App::PerlWatcher::Engine::VERSION = '0.17';
+  $App::PerlWatcher::Engine::VERSION = '0.17_1';
 }
 # ABSTRACT: Creates Watchers and lets them  notify Frontend with their's Statuses
 
@@ -125,6 +125,7 @@ sub sort_statuses {
     ];
 }
 
+
 1;
 
 __END__
@@ -137,7 +138,7 @@ App::PerlWatcher::Engine - Creates Watchers and lets them  notify Frontend with 
 
 =head1 VERSION
 
-version 0.17
+version 0.17_1
 
 =head1 SYNOPSIS
 
@@ -263,6 +264,14 @@ and shelf)
 
 Helper method which sorts statuses in accordance with theirs watchers
 order
+
+=head1 CREDITS
+
+=over 2
+
+Alexandr Ciornii
+
+=back
 
 =head1 AUTHOR
 

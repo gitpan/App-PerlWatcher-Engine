@@ -31,7 +31,6 @@ my %WriteMakefileArgs = (
     "File::ShareDir::ProjectDistDir" => "v0.4.4",
     "HTTP::Date" => "6.02",
     "IPC::Run3" => "0.045",
-    "Linux::Inotify2" => "1.22",
     "List::MoreUtils" => "0.33",
     "Moo" => "1.003000",
     "Net::Ping::External" => "0.13",
@@ -52,7 +51,7 @@ my %WriteMakefileArgs = (
     "Test::More" => 0,
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.17",
+  "VERSION" => "0.17_1",
   "test" => {
     "TESTS" => "t/*.t"
   }
