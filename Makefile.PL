@@ -29,6 +29,7 @@ my %WriteMakefileArgs = (
     "Data::Dump" => "1.22",
     "File::ReadBackwards" => "1.05",
     "File::ShareDir::ProjectDistDir" => "v0.4.4",
+    "IPC::Cmd" => "0.90",
     "IPC::Run3" => "0.045",
     "List::MoreUtils" => "0.33",
     "Moo" => "1.003000",
@@ -49,7 +50,7 @@ my %WriteMakefileArgs = (
     "Test::More" => 0,
     "Test::TCP" => "1.26"
   },
-  "VERSION" => "0.18",
+  "VERSION" => "0.18_2",
   "test" => {
     "TESTS" => "t/*.t"
   }

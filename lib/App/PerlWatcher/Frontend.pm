@@ -1,6 +1,6 @@
 package App::PerlWatcher::Frontend;
 {
-  $App::PerlWatcher::Frontend::VERSION = '0.18';
+  $App::PerlWatcher::Frontend::VERSION = '0.18_2'; # TRIAL
 }
 # ABSTRACT: The base role to which will be notified of updated watcher statuses. 
 
@@ -13,6 +13,9 @@ use Moo::Role;
 
 
 requires 'update';
+
+
+requires 'poll';
 
 
 has 'engine'       => ( is => 'ro', required => 1 );
@@ -29,7 +32,7 @@ App::PerlWatcher::Frontend - The base role to which will be notified of updated 
 
 =head1 VERSION
 
-version 0.18
+version 0.18_2
 
 =head1 ATTRIBUTES
 
@@ -39,9 +42,17 @@ Holds reference to Engine
 
 =head1 METHODS
 
-=head2 start
+=head2 update
 
 The update method will be called with Status, which has been updated.
+
+ $frontend->update($status);
+
+=head2 poll
+
+The poll method will be called when watcher is polling external source
+
+ $frontend->poll($watcher);
 
 =head1 AUTHOR
 

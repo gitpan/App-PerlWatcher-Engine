@@ -1,6 +1,6 @@
 package App::PerlWatcher::Watcher::HTTP;
 {
-  $App::PerlWatcher::Watcher::HTTP::VERSION = '0.18';
+  $App::PerlWatcher::Watcher::HTTP::VERSION = '0.18_2'; # TRIAL
 }
 # ABSTRACT: The base role for watching external events via HTTP
 
@@ -54,6 +54,7 @@ sub _build_watcher_callback {
     my $self = shift;
     my $uri = $self->uri;
     my $watcher = sub {
+        $self->poll_callback->($self);
         $self -> {_guard} = http_get (scalar $uri,
             timeout => $self->timeout,
             sub {
@@ -121,7 +122,7 @@ App::PerlWatcher::Watcher::HTTP - The base role for watching external events via
 
 =head1 VERSION
 
-version 0.18
+version 0.18_2
 
 =head1 ATTRIBUTES
 
