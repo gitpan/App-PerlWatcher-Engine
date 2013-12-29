@@ -1,9 +1,10 @@
+use 5.006;
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.036
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.039
 
-use Test::More  tests => 19 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 20 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
@@ -15,6 +16,8 @@ my @module_files = (
     'App/PerlWatcher/Frontend.pm',
     'App/PerlWatcher/Level.pm',
     'App/PerlWatcher/Levels.pm',
+    'App/PerlWatcher/Memorizable.pm',
+    'App/PerlWatcher/Memory.pm',
     'App/PerlWatcher/Openable.pm',
     'App/PerlWatcher/Shelf.pm',
     'App/PerlWatcher/Status.pm',
@@ -25,8 +28,7 @@ my @module_files = (
     'App/PerlWatcher/Watcher/HTTP.pm',
     'App/PerlWatcher/Watcher/HTTPSimple.pm',
     'App/PerlWatcher/Watcher/Ping.pm',
-    'App/PerlWatcher/Watcher/Weather.pm',
-    'App/PerlWatcher/WatcherMemory.pm'
+    'App/PerlWatcher/Watcher/Weather.pm'
 );
 
 
@@ -36,17 +38,18 @@ use File::Temp;
 local $ENV{HOME} = File::Temp::tempdir( CLEANUP => 1 );
 
 
-my $inc_switch = q[-Mblib];
+my $inc_switch = -d 'blib' ? '-Mblib' : '-Ilib';
 
 use File::Spec;
 use IPC::Open3;
 use IO::Handle;
 
+open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
+
 my @warnings;
 for my $lib (@module_files)
 {
     # see L<perlfaq8/How can I capture STDERR from an external command?>
-    open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
     my $stderr = IO::Handle->new;
 
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");
